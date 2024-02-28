@@ -1,0 +1,117 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2306                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSchemes;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// listed all the required discretization fields required in
+// rhoCentalFoam.C along with a default (or spcific) schemes for each.
+// schemes were mostly arbitrarily chosen for a turbulent viscous flow case.
+
+// fvOptions is not read by rhoCentralFoam
+
+fluxScheme          Kurganov;
+
+ddtSchemes
+{
+    default         Euler; // first order // or CrankNicolson
+
+    //ddt(rho) Euler;
+    //ddt(rhoU) Euler;
+    //ddt(rhoE) Euler;
+    //ddt(rho,U) Euler;
+    //ddt(rho,e) Euler;
+}
+
+gradSchemes
+{
+    default         cellLimited Gauss linear 0.333 ;
+
+    // grad(U) Gauss linear;
+    // grad(rho) Gauss linear;
+    // grad(rhoU) Gauss linear;
+    // grad((1|psi)) Gauss linear;
+    // grad(e) Gauss linear;
+    // grad(sqrt(((Cp|Cv)*(1|psi)))) Gauss linear;
+    // grad(c) Gauss linear;
+    // grad(T) Gauss linear;
+    // grad(epsilon) Gauss linear;
+    // grad(omega) Gaus linear;
+    // grad(k) Gauss linear;
+}
+
+divSchemes
+{
+    default         Gauss linear;
+    div(phi,U) 	    Gauss limitedLinearV 1;
+    // div(phi,k)   Gauss limitedLinear 1;
+    // div(phi,omega) Gauss limitedLinear 1;
+    div(phi,nuTilda)  Gauss limitedLinear 1;
+    div((nuEff*dev2(T(grad(U))))) Gauss linear;
+   
+    // div(tauMC) Gauss linear;
+    // div(phi) Gauss linear;
+    // div(phi,epsilon) Gauss linear;
+    
+    // turbulence      Gauss linearUpwind limited; // upwind  // linearUpwind grad(xxx)
+    // div(phi,k)      $turbulence;
+    // div(phi,omega)  $turbulence;
+
+    // div(((rho*nuEff)*dev2(T(grad(U)))))    Gauss linear; // viscosity
+
+}
+
+laplacianSchemes
+{
+    default         Gauss linear corrected;
+
+    // laplacian(muEff,U) Gauss linear corrected;
+    // laplacian(alphaEff,e) Gauss linear corrected;
+    // laplacian(alpha,e) Gauss linear corrected;
+    // laplacian(k,T) Gauss linear corrected;
+    // laplacian(DepsilonEff,epsilon) Gauss linear corrected;
+    // laplacian(DkEff,k) Gauss linear corrected;
+}
+
+interpolationSchemes
+{
+    default         linear;
+
+    reconstruct(rho) vanLeer;
+    reconstruct(U)  vanLeerV;
+    reconstruct(T)  vanLeer;
+
+    // interpolate(rho) linear;
+    // interpolate(U) linear;
+    // interpolate(T) linear;
+    // interpolate(e) linear;
+    // interpolate(c) linear;
+    // interpolate(rhoU) linear;
+    // interpolate(rPsi) linear;
+    // interpolate(muEff) linear;
+    // interpolate(tauMC) linear;
+}
+
+snGradSchemes
+{
+    default         corrected;
+
+    // snGrad(U) corrected;
+}
+
+wallDist
+{
+    method  meshWave;
+}
+
+// ************************************************************************* //

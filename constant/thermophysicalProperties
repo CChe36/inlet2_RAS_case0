@@ -1,0 +1,64 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2306                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      thermophysicalProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+thermoType
+{
+    type            hePsiThermo; // Specifies the type of thermophysical model to be used.
+                                 // In this case, it's hePsiThermo. This model is a combination 
+                                 // of the h (enthalpy) and psi (specific internal energy) models, 
+                                 //and it's often used for compressible flows.
+    mixture         pureMixture; // Defines the mixture type. pureMixture indicates that the fluid
+                                 // is a pure substance (not a mixture of different species).
+    transport       const;       // Specifies the type of transport model to be used. 
+                                 // Here, it's set to const, indicating constant transport properties.
+    thermo          hConst;      // Indicates the thermo model used for determining thermodynamic 
+                                 // properties. hConst specifies that the specific enthalpy (h) will be held constant.
+    equationOfState perfectGas;  // Specifies the equation of state to be used. In this case, 
+                                 // it's set to perfectGas, indicating that the fluid behaves as an ideal gas.
+    specie          specie;      // Indicates the species model. Here, it's set to specie, which
+                                 // implies a single-species model (no chemical reactions are considered).
+    energy          sensibleInternalEnergy; // Specifies the energy model. sensibleInternalEnergy indicates 
+                                            // that the sensible internal energy will be used as the energy variable.
+}
+
+// as a tendency: In the source code, typically upper case letters 
+// (e.g. Ha) indicate [J/kg] and lower case (e.g. ha) [J/kmol].
+
+mixture
+
+{
+    // normalised gas
+    specie
+    {
+        nMoles          1;
+        molWeight       28.96; // molar weight of air kg/kmol 
+    }
+    thermodynamics
+    {
+        Cp              1004.5; // specific heat J/kg K
+        Hf              2.544e+06; // 0; // specific enthalpy - heat of fusion -- dry air or one fluid type
+    }
+    transport
+    {
+        mu              18e-6; // dynamic viscosity - N s/m^2 or kg/m s, rhoCentralFoam is 0 for inviscid
+        Pr              0.71; // prandtl number
+        Tref            300;
+        Href            250750;
+    }
+}
+
+
+// ************************************************************************* //

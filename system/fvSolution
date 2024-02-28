@@ -1,0 +1,149 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2306                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version 2.0;
+    format ascii;
+    class dictionary;
+    location "system";
+    object fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    "(rho|rhoU|rhoE)"
+    {
+        solver          diagonal;
+    }
+
+    "(rho|U|h|k|e|omega)"
+    {
+        solver          GAMG; // smoothSolver??
+        smoother        GaussSeidel;
+        nSweeps         10;
+        tolerance       1e-08;
+        relTol          0.01;
+    }
+
+
+
+/*"(U|p|k|nuTilda|omega)"
+    {
+        solver          GAMG;
+        smoother        GaussSeidel;
+        nSweeps         10;
+        tolerance       1e-6;
+        relTol          0.1;
+    }
+
+    "(U|p|k|nuTilda|omega|rho|rhoU|rhoE)Final"
+    {
+        $U;
+        relTol          0.01;
+    }
+    
+     "(e)"
+    {
+        solver          GAMG;
+        smoother        GaussSeidel;
+        nSweeps         10;
+        tolerance       1e-6;
+        relTol          0.1;
+    }
+
+    "(e)Final"
+    {
+        $U;
+        relTol          0.1;
+    }
+    
+    
+    "(epsilon)"
+    {
+        solver          GAMG;
+        smoother        GaussSeidel;
+        nSweeps         10;
+        tolerance       1e-6;
+        relTol          0.01;
+    }
+
+    "(epsilon)Final"
+    {
+        $epsilon;
+        relTol          0;
+    }
+    
+    "(R)"
+    {
+        solver          GAMG;
+        smoother        GaussSeidel;
+        nSweeps         10;
+        tolerance       1e-6;
+        relTol          0.1;
+    }
+
+    "(R)Final"
+    {
+        $R;
+        relTol          0.01;
+    }
+*/
+}
+
+
+
+
+
+PIMPLE
+{
+    momentumPredictor yes;
+    nOuterCorrectors 2;
+    nCorrectors      2;
+    nNonOrthogonalCorrectors 2;
+    transonic	yes;
+   // rhoMax	10;
+}
+
+
+
+
+
+/*relaxationFactors
+{
+    fields
+    {
+        ".*"            0.3;
+
+    }
+    equations
+    {
+        U                       0.5;
+        h                       0.5;
+        "(e|k|omega)"           0.5;
+    }
+}
+*/
+/*
+relaxationFactors
+{
+    fields
+    {
+       ".*"  0.3;
+    }
+    equations
+    {
+        "U"  0.7;
+        "p"  0.7;
+        "e"  0.7;
+    }
+}
+*/
+
+
+// ************************************************************************* //
